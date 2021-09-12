@@ -98,7 +98,6 @@ class PagaCollectClient
 
         if ($data != null) {
             $data_string = json_encode($data);
-            print_r($data_string);
 
             curl_setopt($curl, CURLOPT_POSTFIELDS, $data_string);
         }
@@ -121,7 +120,6 @@ class PagaCollectClient
         foreach ($data as $key => $value) {
             $hash .= $value;
         }
-        echo $hash;
         $hash=$hash.$this->apiKey;
         $hash = hash('sha512', $hash);
 
@@ -224,7 +222,6 @@ class PagaCollectClient
               $data['creditBankAccountNumber'] ??= null;
               $data['callbackUrl'] ??= null;
               extract($data);
-              var_dump($data);
               
               $request_data = [
                   'referenceNumber'=>$referenceNumber,
@@ -308,7 +305,6 @@ class PagaCollectClient
             $hash = $this->createHash($request_data);
             $curl = $this->buildRequest($url, $hash, $request_data);
   
-            //   print_r($url);
             $response = curl_exec($curl);
             $this->checkCURL($curl, json_decode($response, true));
             return $response;
