@@ -1,4 +1,4 @@
-# Paga Collect PHP API Library v1.0.2
+# Paga Collect PHP API Library v1.1.2
 
 ## Business Services exposed by the library
 
@@ -10,6 +10,7 @@
 - updatePersistentPaymentAccount
 - deletePersistentPaymentAccount
 - paymentRequestFund
+- getPersistentPaymentAccount
 
 For more information on the services listed above, visit the [Paga DEV website](https://developer-docs.paga.com/docs/php-library-1)
 
@@ -186,7 +187,7 @@ $registerPersistentPaymentAccount = $collectAPI ->paymentRequestRefund($data);
 - Removed php-console dependencies
 
 
-## [1.0.2] - 2021-10-03
+## [1.1.2] - 2021-10-03
 
 ### Added
 
