@@ -1,4 +1,4 @@
-# Paga Collect PHP API Library v1.0.1
+# Paga Collect PHP API Library v1.0.2
 
 ## Business Services exposed by the library
 
@@ -6,6 +6,10 @@
 - getBanks
 - paymentStatus
 - paymentHistory
+- registerPersistentPaymentAccount
+- updatePersistentPaymentAccount
+- deletePersistentPaymentAccount
+- paymentRequestFund
 
 For more information on the services listed above, visit the [Paga DEV website](https://developer-docs.paga.com/docs/php-library-1)
 
@@ -95,6 +99,77 @@ $data = [
 $paymentStatus = $collectAPI ->paymentHistory($data);
 ```
 
+
+
+**Register Persistent Payment Account**
+
+An operation for business to create Persistent Payment Account Numbers that can be assigned to their customers for payment collection.
+To make use of this function, call the **registerPersistentPaymentAccount** inside PagaCollectClient which will return a JSONObject.
+
+```
+$data= [
+    'referenceNumber'=>"47575685389595",
+    'phoneNumber'=>"07048576234",
+    'firstName'=>"Ian", 
+    'lastName'=>"Lankansa",
+    'accountName'=>"Ian Lankansa", 
+    'financialIdentificationNumber'=>"12345484326",
+    'accountReference'=>"123407891334",
+    'callbackUrl' => "http://localhost:9091/test-callback"
+];
+$registerPersistentPaymentAccount = $collectAPI ->registerPersistentPaymentAccount($data);
+```
+
+
+**Update Persistent Payment Account**
+
+This endpoint allows for changing any of the account properties except the **accountNumber (NUBAN)** and the **accounReference** properties which cannot be changed.
+To make use of this function, call the **updatePersistentPaymentAccount** inside PagaCollectClient which will return a JSONObject.
+
+```
+$data= [
+    'referenceNumber'=>"47575685389595",
+    'phoneNumber'=>"07048576234",
+    'firstName'=>"Ian", 
+    'lastName'=>"Lankansa",
+    'accountName'=>"Ian Lankansa", 
+    'accountIdentifier'=>"12345484326",
+    'callbackUrl' => "http://localhost:9091/test-callback"
+];
+$registerPersistentPaymentAccount = $collectAPI ->updatePersistentPaymentAccount($data);
+```
+
+
+**Delete Persistent Payment Account**
+
+This endpoint allows for deleting a persistent payment account.
+To make use of this function, call the **deletePersistentPaymentAccount** inside PagaCollectClient which will return a JSONObject.
+
+```
+$data= [
+    'referenceNumber'=>"47575685389595",
+    'accountIdentifier'=>"12345484326"
+];
+$registerPersistentPaymentAccount = $collectAPI ->deletePersistentPaymentAccount($data);
+```
+
+
+**Payment Request Fund**
+
+This end-point can be used to either cancel or initiate a refund if we were unable to fulfill the request for one reason or the other
+To make use of this function, call the **paymentRequestFund** inside PagaCollectClient which will return a JSONObject.
+
+```
+$data= [
+    'referenceNumber'=>"47575685389595",
+    'accountIdentifier'=>"12345484326"
+    'refundAmount'=>500,
+    'currency'=> "NGN",
+];
+$registerPersistentPaymentAccount = $collectAPI ->paymentRequestRefund($data);
+```
+
+
 # Changelog
 
 ## [1.0.0] - 2021-05-20
@@ -103,10 +178,16 @@ $paymentStatus = $collectAPI ->paymentHistory($data);
 
 - Implemented endpoints for paga-collect
 
-
 ## [1.0.1] - 2021-05-25
 
 ### Bug fix
 
 - Updated dependecies
 - Removed php-console dependencies
+
+
+## [1.0.2] - 2021-10-03
+
+### Added
+
+- Implemented updatePersistentPaymentAccount, getPersistentPaymentAccount, deletePersistentPaymentAccount, paymentRequestRefund etc.
