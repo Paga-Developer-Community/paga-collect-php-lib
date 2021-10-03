@@ -131,14 +131,14 @@ class PagaCollectClient
      *
      * @param array $data Payment request object
      *
-     * @return JSON Object with List of Banks integrated with paga
+     * @return JSON Object Payment Request Response
      */
     public function paymentRequest($data)
     {
         try {
             $server = ($this->test) ? $this->test_server : $this->live_server;
             $url = $server."paymentRequest";
-            $data['currency'] ??= null;
+            $data['currency'] ??= "NGN";
             extract($data);
             $payer['email'] ??= null;
             $payer['phoneNumber'] ??= null;
@@ -203,16 +203,13 @@ class PagaCollectClient
         }
     }
 
-
-      /**
-       * Register Persistent Payment Account function
-       *
-       * @param array $data Register Persistent Payment request
-       * 
-       * @return JSON Object with List of Banks integrated with paga
-       * 
-       * 
-       */
+        /**
+         *  Register Persistent Payment Account function
+         *
+         * @param array $data Register Persistent Payment Account object
+         *                                                                                           
+         * @return JSON Object registerPersistentPaymentAccount response
+         */
     public function registerPersistentPaymentAccount($data)
     {
         try {
@@ -257,12 +254,153 @@ class PagaCollectClient
     }
 
 
+         /**
+          *  Update Persistent Payment Account function
+          *
+          * @param array $data Register Persistent Payment Account object
+          *                                                
+          * @return JSON Object updatePersistentPayementAccount response
+          */
+    public function updatePersistentPaymentAccount($data)
+    {
+        try {
+               $server = ($this->test) ? $this->test_server : $this->live_server;
+               $url = $server."updatePersistentPaymentAccount";
+               $data['phoneNumber'] ??= null;
+               $data['firstName'] ??= null;
+               $data['lastName'] ??= null;
+               $data['accountName'] ??= null;
+               $data['financialIdentificationNumber'] ??= null;
+               $data['callbackUrl'] ??= null;
+               $data['creditBankId'] ??= null;
+               $data['creditBankAccountNumber'] ??= null;
+               extract($data);
+               
+               $request_data = [
+                   'referenceNumber'=>$referenceNumber,
+                   'phoneNumber'=>$phoneNumber,
+                   'firstName'=>$firstName, 
+                   'lastName'=>$lastName,
+                   'accountName'=>$accountName, 
+                   'financialIdentificationNumber'=>$financialIdentificationNumber,
+                   'accountIdentifier'=>$accountIdentifier,
+                   'creditBankId' =>$creditBankId,
+                   'creditBankAccountNumber' => $creditBankAccountNumber,
+                   'callbackUrl' => $callbackUrl
+               ];
+   
+               $hash_params= array(
+                   $referenceNumber,
+                   $accountIdentifier,
+                   $creditBankId,
+                   $creditBankAccountNumber,
+                   $callbackUrl
+                           
+               );
+   
+               $hash = $this->createHash(array_filter($hash_params));
+               $curl = $this->buildRequest($url, $hash, array_filter($request_data));
+               $response = curl_exec($curl);
+               $this->checkCURL($curl, json_decode($response, true));
+               return $response;
+        } catch (Exception $e) {
+                  return $e->getMessage();
+        }
+    }
+
+
+         /**
+          *  Delete Persistent Payment Account function
+          *
+          * @param array $data Register Persistent Payment Account object
+          *                                                
+          * @return JSON Object deletePersistentPaymentAccount response
+          */
+    public function deletePersistentPaymentAccount($data)
+    {
+        try {
+                $server = ($this->test) ? $this->test_server : $this->live_server;
+                $url = $server."deletePersistentPaymentAccount";
+                $data['reason'] ??= null;
+                
+                extract($data);
+                
+                $request_data = [
+                    'referenceNumber'=>$referenceNumber,
+                    'accountIdentifier'=>$accountIdentifier,
+                    'reason' => $reason
+                ];
+    
+                $hash_params= array(
+                    $referenceNumber,
+                    $accountIdentifier
+                            
+                );
+    
+                $hash = $this->createHash(array_filter($hash_params));
+                $curl = $this->buildRequest($url, $hash, array_filter($request_data));
+                $response = curl_exec($curl);
+                $this->checkCURL($curl, json_decode($response, true));
+                return $response;
+        } catch (Exception $e) {
+                        return $e->getMessage();
+        }
+    }
+
+
+
+         /**
+          *  Payment Request Refund function
+          *
+          * @param array $data Register Persistent Payment Account object
+          *                    $data = [
+          *                    'referenceNumber'=>$referenceNumber,
+          *                    'refundAmount'=>$refundAmount,
+          *                    'currency'=> $currency,
+          *                    'reason' => $reason
+          *                    ];
+          *                                                
+          * @return JSON Object Payment Request Refund Response
+          */
+    public function paymentRequestRefund($data)
+    {
+        try {
+                $server = ($this->test) ? $this->test_server : $this->live_server;
+                $url = $server."refund";
+                $data['reason'] ??= null;
+            
+                extract($data);
+                
+                $request_data = [
+                    'referenceNumber'=>$referenceNumber,
+                    'refundAmount'=>$refundAmount,
+                    'currency'=> $currency,
+                    'reason' => $reason
+                ];
+    
+                $hash_params= array(
+                    $referenceNumber,
+                    $refundAmount
+                            
+                );
+    
+                $hash = $this->createHash(array_filter($hash_params));
+                $curl = $this->buildRequest($url, $hash, array_filter($request_data));
+                $response = curl_exec($curl);
+                $this->checkCURL($curl, json_decode($response, true));
+                return $response;
+        } catch (Exception $e) {
+             return $e->getMessage();
+        }
+    }
+
+
     /**
      * Payment Request History function
      *
      * @param array $data Get Bank request
      *
-     * @return JSON Object with List of Banks integrated with paga
+     * @return JSON Object Payment History Response
      */
     public function paymentHistory($data)
     {
@@ -286,6 +424,45 @@ class PagaCollectClient
             return $e->getMessage();
         }
     }
+
+       /**
+        *  Get Persistent Payment Account function
+        *
+        * @param array $data Get Persistent Payment Account object              
+        *                                                
+        * @return JSON Object getPersistentPaymentAccount response
+        */
+    public function getPersistentPaymentAccount($data)
+    {
+        try {
+                $server = ($this->test) ? $this->test_server : $this->live_server;
+                $url = $server."getPersistentPaymentAccount";
+            
+                extract($data);
+                var_dump($data);
+                
+                $request_data = [
+                    'referenceNumber'=>$referenceNumber,
+                    'accountIdentifier'=>$accountIdentifier,
+                
+                ];
+    
+                $hash_params= array(
+                    $referenceNumber,
+                    $accountIdentifier
+                            
+                );
+    
+                $hash = $this->createHash(array_filter($hash_params));
+                $curl = $this->buildRequest($url, $hash, array_filter($request_data));
+                $response = curl_exec($curl);
+                $this->checkCURL($curl, json_decode($response, true));
+                return $response;
+        } catch (Exception $e) {
+                       return $e->getMessage();
+        }
+    }
+    
     
 
     /**
@@ -305,6 +482,7 @@ class PagaCollectClient
             $hash = $this->createHash($request_data);
             $curl = $this->buildRequest($url, $hash, $request_data);
   
+            //   print_r($url);
             $response = curl_exec($curl);
             $this->checkCURL($curl, json_decode($response, true));
             return $response;
@@ -321,7 +499,7 @@ class PagaCollectClient
      * @param array $data A unique reference number provided by
      *                    the clientto uniquely identify the transaction
      *
-     * @return JSON Object with List of Banks integrated with paga
+     * @return JSON Object paymentStatus response
      */
     public function paymentStatus($data)
     {
