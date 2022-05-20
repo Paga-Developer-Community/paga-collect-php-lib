@@ -18,14 +18,14 @@ For more information on the services listed above, visit the [Paga DEV website](
 
 `composer require paga/paga-collect`
 
-```
+```php
 require_once __DIR__ .'/vendor/autoload.php'
 
 
 $collectClient = PagaCollectClient::builder()
-                ->setApiKey("<apiKey>")
-                ->setClientId("<publicId>")
-                ->setPassword("<password>")
+                ->setApiKey("<HASH_KEY>")
+                ->setClientId("<PUBLIC_KEY>")
+                ->setPassword("<SECRET_KEY>")
                 ->setTest(true)
                 ->build();
 ```
@@ -40,7 +40,7 @@ Registers a new request for payment between a payer and a payee. Once a payment 
 
 To make use of this function, call the **paymentRequest** inside PagaCollectClient which will return a JSONObject.
 
-```
+```php
 $data = ["referenceNumber" => "908w1111000001129",
     "amount" => 200,
     "callBackUrl" => "http://localhost:5000/core/webhook/paga",
@@ -71,7 +71,7 @@ $paymentRequest = $collectClient->paymentRequest($data);$response =
 Retrieve a list of supported banks and their complementary unique ids on the bank. This is required for populating the payer (optional) and payee objects in the payment request model.
 To make use of this function, call the **getBanks** inside PagaCollectClient which will return a JSONObject.
 
-```
+```php
 $data = ['referenceNumber' => "234455555"];
 $getBanks = $collectAPI ->getBanks($data);
 ```
@@ -81,7 +81,7 @@ $getBanks = $collectAPI ->getBanks($data);
 Query the current status of a submitted payment request.
 To make use of this function, call the **paymentStatus** inside PagaCollectClient which will return a JSONObject.
 
-```
+```php
 $data = ['referenceNumber' => "234455555"];
 $paymentStatus = $collectAPI ->paymentStatus($data);
 ```
@@ -91,7 +91,7 @@ $paymentStatus = $collectAPI ->paymentStatus($data);
 Get payment requests for a period between to give start and end dates. The period window should not exceed 1 month.
 To make use of this function, call the **paymentHistory** inside PagaCollectClient which will return a JSONObject.
 
-```
+```php
 $data = [
     "referenceNumber" => "8235346400000099",
     "startDateTimeUTC" => "2021-04-21T19:15:22",
@@ -107,7 +107,7 @@ $paymentStatus = $collectAPI ->paymentHistory($data);
 An operation for business to create Persistent Payment Account Numbers that can be assigned to their customers for payment collection.
 To make use of this function, call the **registerPersistentPaymentAccount** inside PagaCollectClient which will return a JSONObject.
 
-```
+```php
 $data= [
     'referenceNumber'=>"47575685389595",
     'phoneNumber'=>"07048576234",
@@ -124,10 +124,10 @@ $registerPersistentPaymentAccount = $collectAPI ->registerPersistentPaymentAccou
 
 **Update Persistent Payment Account**
 
-This endpoint allows for changing any of the account properties except the **accountNumber (NUBAN)** and the **accounReference** properties which cannot be changed.
+This endpoint allows for changing any of the account properties except the **accountNumber (NUBAN)** and the **accountReference** properties which cannot be changed.
 To make use of this function, call the **updatePersistentPaymentAccount** inside PagaCollectClient which will return a JSONObject.
 
-```
+```php
 $data= [
     'referenceNumber'=>"47575685389595",
     'phoneNumber'=>"07048576234",
@@ -146,7 +146,7 @@ $registerPersistentPaymentAccount = $collectAPI ->updatePersistentPaymentAccount
 This endpoint allows for deleting a persistent payment account.
 To make use of this function, call the **deletePersistentPaymentAccount** inside PagaCollectClient which will return a JSONObject.
 
-```
+```php
 $data= [
     'referenceNumber'=>"47575685389595",
     'accountIdentifier'=>"12345484326"
@@ -160,7 +160,7 @@ $registerPersistentPaymentAccount = $collectAPI ->deletePersistentPaymentAccount
 This end-point can be used to either cancel or initiate a refund if we were unable to fulfill the request for one reason or the other
 To make use of this function, call the **paymentRequestFund** inside PagaCollectClient which will return a JSONObject.
 
-```
+```php
 $data= [
     'referenceNumber'=>"47575685389595",
     'accountIdentifier'=>"12345484326"
@@ -183,7 +183,7 @@ $registerPersistentPaymentAccount = $collectAPI ->paymentRequestRefund($data);
 
 ### Bug fix
 
-- Updated dependecies
+- Updated dependencies
 - Removed php-console dependencies
 
 
