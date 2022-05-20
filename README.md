@@ -124,7 +124,7 @@ $registerPersistentPaymentAccount = $collectAPI ->registerPersistentPaymentAccou
 
 **Update Persistent Payment Account**
 
-This endpoint allows for changing any of the account properties except the **accountNumber (NUBAN)** and the **accounReference** properties which cannot be changed.
+This endpoint allows for changing any of the account properties except the **accountNumber (NUBAN)** and the **accountReference** properties which cannot be changed.
 To make use of this function, call the **updatePersistentPaymentAccount** inside PagaCollectClient which will return a JSONObject.
 
 ```php
@@ -183,7 +183,7 @@ $registerPersistentPaymentAccount = $collectAPI ->paymentRequestRefund($data);
 
 ### Bug fix
 
-- Updated dependecies
+- Updated dependencies
 - Removed php-console dependencies
 
 
